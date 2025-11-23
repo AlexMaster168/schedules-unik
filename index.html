@@ -21,7 +21,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useMemo, useRef } = React;
 
         const Icon = ({ name, size = 20, className = "" }) => {
             const icons = {
@@ -211,20 +211,15 @@
             );
         };
 
-        const Header = ({ currentWeek, currentDayIndex }) => {
-            const [time, setTime] = useState(new Date());
+        const Header = ({ currentWeek, currentDayIndex, now }) => {
             const [birthdayPeople, setBirthdayPeople] = useState([]);
 
             useEffect(() => {
-                const timer = setInterval(() => setTime(new Date()), 1000);
-                return () => clearInterval(timer);
-            }, []);
-
-            useEffect(() => {
-                const todayStr = new Date().toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' });
+                if (!now) return;
+                const todayStr = now.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' });
                 const people = GROUP_LIST.filter(p => p.bday === todayStr);
                 setBirthdayPeople(people);
-            }, []);
+            }, [now]);
 
             const formatTime = (date) => {
                 return date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
@@ -239,8 +234,8 @@
                     <div className="flex justify-between items-start">
                         <div>
                             <h2 className="text-blue-100 font-medium text-sm mb-1 uppercase tracking-wider">КБЗІ-5.01</h2>
-                            <h1 className="text-3xl font-bold mb-1">{formatTime(time)}</h1>
-                            <p className="text-blue-100">{DAYS_MAP[currentDayIndex]}, {formatDate(time)}</p>
+                            <h1 className="text-3xl font-bold mb-1">{formatTime(now)}</h1>
+                            <p className="text-blue-100">{DAYS_MAP[currentDayIndex]}, {formatDate(now)}</p>
                         </div>
                         <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl text-center border border-white/20">
                             <span className="block text-xs text-blue-100 uppercase">Тиждень</span>
@@ -262,39 +257,34 @@
             );
         };
 
-        const UpcomingClassAlert = ({ currentWeek }) => {
+        const UpcomingClassAlert = ({ currentWeek, now }) => {
             const [alert, setAlert] = useState(null);
 
             useEffect(() => {
-                const checkTime = () => {
-                    const now = new Date();
-                    const currentDay = now.getDay();
-                    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                if (!now) return;
+                
+                const currentDay = now.getDay();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                
+                const todaysLessons = SCHEDULE[currentDay] || [];
+                const activeLessons = todaysLessons.filter(l => checkWeek(l.weeks, currentWeek));
+
+                let found = null;
+
+                for (let lesson of activeLessons) {
+                    const [startH, startM] = lesson.time.split('-')[0].split(':').map(Number);
+                    const [endH, endM] = lesson.time.split('-')[1].split(':').map(Number);
                     
-                    const todaysLessons = SCHEDULE[currentDay] || [];
-                    const activeLessons = todaysLessons.filter(l => checkWeek(l.weeks, currentWeek));
+                    const startMinutes = startH * 60 + startM;
+                    const endMinutes = endH * 60 + endM;
 
-                    let found = null;
-
-                    for (let lesson of activeLessons) {
-                        const [startH, startM] = lesson.time.split('-')[0].split(':').map(Number);
-                        const [endH, endM] = lesson.time.split('-')[1].split(':').map(Number);
-                        
-                        const startMinutes = startH * 60 + startM;
-                        const endMinutes = endH * 60 + endM;
-
-                        if (currentMinutes >= startMinutes - 5 && currentMinutes <= endMinutes) {
-                            found = { ...lesson, isRunning: currentMinutes >= startMinutes };
-                            break;
-                        }
+                    if (currentMinutes >= startMinutes - 5 && currentMinutes <= endMinutes) {
+                        found = { ...lesson, isRunning: currentMinutes >= startMinutes };
+                        break;
                     }
-                    setAlert(found);
-                };
-
-                checkTime();
-                const interval = setInterval(checkTime, 30000);
-                return () => clearInterval(interval);
-            }, [currentWeek]);
+                }
+                setAlert(found);
+            }, [currentWeek, now]);
 
             if (!alert) return null;
 
@@ -323,7 +313,6 @@
 
         const ClassCard = ({ lesson, isNow, isNext }) => {
             const getLink = (name) => TEACHERS_LINKS[name] || null;
-            
             const link1 = getLink(lesson.teacher);
             const link2 = lesson.teacher2 ? getLink(lesson.teacher2) : null;
 
@@ -368,15 +357,28 @@
             );
         };
 
-        const ScheduleTab = ({ currentWeek, currentDayIndex }) => {
+        const ScheduleTab = ({ currentWeek, currentDayIndex, now }) => {
             const [selectedDay, setSelectedDay] = useState(currentDayIndex === 0 ? 1 : currentDayIndex);
+            const daysContainerRef = useRef(null);
+
+            useEffect(() => {
+                if (daysContainerRef.current) {
+                    const buttons = daysContainerRef.current.querySelectorAll('button');
+                    // Map day index (1-5) to array index (0-4). Sunday (0) and Saturday (6) handle? 
+                    // Buttons are [1, 2, 3, 4, 5]
+                    // If selectedDay is 1 (Mon) -> index 0.
+                    const btnIndex = selectedDay - 1;
+                    if (buttons[btnIndex]) {
+                        buttons[btnIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                }
+            }, [selectedDay]);
 
             const filteredLessons = useMemo(() => {
                 const lessons = SCHEDULE[selectedDay] || [];
                 return lessons.filter(l => checkWeek(l.weeks, currentWeek));
             }, [selectedDay, currentWeek]);
 
-            const now = new Date();
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
             const getStatus = (timeRange) => {
@@ -395,7 +397,7 @@
 
             return (
                 <div className="pb-20">
-                    <div className="flex overflow-x-auto gap-3 px-4 pb-4 mb-2 hide-scrollbar snap-x snap-mandatory">
+                    <div ref={daysContainerRef} className="flex overflow-x-auto gap-3 px-4 pb-4 mb-2 hide-scrollbar snap-x snap-mandatory">
                         {[1, 2, 3, 4, 5].map(dayIdx => (
                             <button
                                 key={dayIdx}
@@ -436,7 +438,6 @@
 
         const TeachersTab = () => {
             const [search, setSearch] = useState("");
-            
             const filtered = Object.entries(TEACHERS_LINKS).filter(([name]) => 
                 name.toLowerCase().includes(search.toLowerCase())
             );
@@ -482,19 +483,16 @@
                             <Icon name="CreditCard" className="text-blue-600" />
                             Реквізити оплати
                         </h3>
-                        
                         <div className="space-y-6">
                             <div>
                                 <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Одержувач</label>
                                 <p className="text-gray-800 mb-2">Державний університет інтелектуальних технологій і зв’язку</p>
                             </div>
-
                             <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
                                 <label className="text-xs text-blue-500 uppercase font-bold tracking-wider mb-1 block">IBAN (Рахунок)</label>
                                 <p className="text-gray-900 font-mono text-sm break-all mb-3 font-medium">UA498201720313271001201057205</p>
                                 <CopyButton text="UA498201720313271001201057205" label="Копіювати IBAN" />
                             </div>
-
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">МФО</label>
@@ -507,7 +505,6 @@
                                     <CopyButton text="43997335" label="Код" />
                                 </div>
                             </div>
-
                             <div className="border-t pt-4">
                                 <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Призначення платежу</label>
                                 <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-100 flex gap-3 items-start">
@@ -575,30 +572,31 @@
         const App = () => {
             const [activeTab, setActiveTab] = useState('schedule');
             
+            const [now, setNow] = useState(new Date());
+
+            useEffect(() => {
+                const timer = setInterval(() => setNow(new Date()), 1000);
+                return () => clearInterval(timer);
+            }, []);
+            
             const currentWeek = useMemo(() => {
-                const now = new Date();
                 const start = new Date('2025-09-01T00:00:00');
                 if (now < start) return 1; 
-                
                 const diffTime = now - start;
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
                 return Math.floor(diffDays / 7) + 1;
-            }, []);
+            }, [now]);
 
-            const today = new Date();
-            const dayIndex = today.getDay(); 
+            const dayIndex = now.getDay(); 
 
             return (
                 <div className="max-w-md mx-auto min-h-screen bg-[#f3f4f6] relative">
-                    <Header currentWeek={currentWeek} currentDayIndex={dayIndex} />
-                    
-                    <UpcomingClassAlert currentWeek={currentWeek} />
-
-                    {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} />}
+                    <Header currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} />
+                    <UpcomingClassAlert currentWeek={currentWeek} now={now} />
+                    {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} />}
                     {activeTab === 'teachers' && <TeachersTab />}
                     {activeTab === 'payment' && <PaymentTab />}
                     {activeTab === 'group' && <GroupTab />}
-
                     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-3 flex justify-between items-center z-50 max-w-md mx-auto">
                         <button 
                             onClick={() => setActiveTab('schedule')}
