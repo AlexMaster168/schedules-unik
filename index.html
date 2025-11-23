@@ -13,6 +13,8 @@
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
+        .animate-float { animation: float 3s ease-in-out infinite; }
     </style>
 </head>
 <body>
@@ -32,7 +34,9 @@
                 Check: <polyline points="20 6 9 17 4 12" />,
                 ChevronRight: <polyline points="9 18 15 12 9 6" />,
                 BookOpen: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></>,
-                AlertCircle: <><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></>
+                AlertCircle: <><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></>,
+                Gift: <><polyline points="20 12 20 22 4 22 4 12" /><rect x="2" y="7" width="20" height="5" /><line x1="12" y1="22" x2="12" y2="7" /><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" /><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" /></>,
+                Bell: <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
             };
 
             return (
@@ -71,38 +75,38 @@
         };
 
         const GROUP_LIST = [
-            { id: 1, name: "Бабаченко В'ячеслав Андрійович" },
-            { id: 2, name: "Багній Діана Олександрівна" },
-            { id: 3, name: "Бескровний Володимир Янович" },
-            { id: 4, name: "Букач Владислав Миколайович" },
-            { id: 5, name: "Браткевич Максим Ігорович" },
-            { id: 6, name: "Бухтояров Артем Артемович" },
-            { id: 7, name: "Венерчук Євгеній Віталійович" },
-            { id: 8, name: "Гальцев Владислав Олександрович" },
-            { id: 9, name: "Горшкова Анастасія Єгорівна" },
-            { id: 10, name: "Демовський Артем Віталійович" },
-            { id: 11, name: "Довгань Михайло Олегович", role: "Зам. старости" },
-            { id: 12, name: "Іваненко Поліна Олегівна" },
-            { id: 13, name: "Ісак-Заде Діана Георгіївна" },
-            { id: 14, name: "Караконстантин Родіон Іванович" },
-            { id: 15, name: "Кириленко Тимофій Іванович" },
-            { id: 16, name: "Кір'як Кірілл Сергійович" },
-            { id: 17, name: "Кірова Софія Василівна" },
-            { id: 18, name: "Кузьменко Олександр Володимирович" },
-            { id: 19, name: "Марковський Олександр Анатолійович" },
-            { id: 20, name: "Маслянникова Анастасія Олександрівна" },
-            { id: 21, name: "Матвєєв Артем Олегович" },
-            { id: 22, name: "Михайленко Георгій Олександрович" },
-            { id: 23, name: "Налбат Данило Олександрович" },
-            { id: 24, name: "Патраков Євгеній Віталійович" },
-            { id: 25, name: "Петрик Сергій Юрійович" },
-            { id: 26, name: "Сільвейструк Олексій Русланович", role: "Староста" },
-            { id: 27, name: "Соболь Анастасія Сергіївна" },
-            { id: 28, name: "Шаповал Ксенія Ігорівна" },
-            { id: 29, name: "Швець Дар'я Андріївна" },
-            { id: 30, name: "Шелехов Петро Юрійович" },
-            { id: 31, name: "Український Микола Володимирович" },
-            { id: 32, name: "Лучинський Владислав Сергійович" }
+            { id: 1, name: "Бабаченко В'ячеслав Андрійович", bday: "05.11" },
+            { id: 2, name: "Багній Діана Олександрівна", bday: "28.03" },
+            { id: 3, name: "Бескровний Володимир Янович", bday: "12.07" },
+            { id: 4, name: "Букач Владислав Миколайович", bday: null },
+            { id: 5, name: "Браткевич Максим Ігорович", bday: "02.09" },
+            { id: 6, name: "Бухтояров Артем Артемович", bday: "30.10" },
+            { id: 7, name: "Венерчук Євгеній Віталійович", bday: "12.07" },
+            { id: 8, name: "Гальцев Владислав Олександрович", bday: "25.05" },
+            { id: 9, name: "Горшкова Анастасія Єгорівна", bday: "14.11" },
+            { id: 10, name: "Демовський Артем Віталійович", bday: "19.09" },
+            { id: 11, name: "Довгань Михайло Олегович", role: "Зам. старости", bday: "23.01" },
+            { id: 12, name: "Іваненко Поліна Олегівна", bday: "12.01" },
+            { id: 13, name: "Ісак-Заде Діана Георгіївна", bday: "29.03" },
+            { id: 14, name: "Караконстантин Родіон Іванович", bday: "01.05" },
+            { id: 15, name: "Кириленко Тимофій Іванович", bday: "14.08" },
+            { id: 16, name: "Кір'як Кірілл Сергійович", bday: "14.05" },
+            { id: 17, name: "Кірова Софія Василівна", bday: "05.11" },
+            { id: 18, name: "Кузьменко Олександр Володимирович", bday: "04.03" },
+            { id: 19, name: "Марковський Олександр Анатолійович", bday: "28.06" },
+            { id: 20, name: "Маслянникова Анастасія Олександрівна", bday: "09.08" },
+            { id: 21, name: "Матвєєв Артем Олегович", bday: "01.09" },
+            { id: 22, name: "Михайленко Георгій Олександрович", bday: "17.04" },
+            { id: 23, name: "Налбат Данило Олександрович", bday: "10.03" },
+            { id: 24, name: "Патраков Євгеній Віталійович", bday: "07.02" },
+            { id: 25, name: "Петрик Сергій Юрійович", bday: "14.10" },
+            { id: 26, name: "Сільвейструк Олексій Русланович", role: "Староста", bday: "04.11" },
+            { id: 27, name: "Соболь Анастасія Сергіївна", bday: "12.01" },
+            { id: 28, name: "Шаповал Ксенія Ігорівна", bday: "26.04" },
+            { id: 29, name: "Швець Дар'я Андріївна", bday: "04.10" },
+            { id: 30, name: "Шелехов Петро Юрійович", bday: "18.02" },
+            { id: 31, name: "Український Микола Володимирович", bday: "05.08" },
+            { id: 32, name: "Лучинський Владислав Сергійович", bday: "07.03" }
         ];
 
         const SCHEDULE = {
@@ -209,10 +213,17 @@
 
         const Header = ({ currentWeek, currentDayIndex }) => {
             const [time, setTime] = useState(new Date());
+            const [birthdayPeople, setBirthdayPeople] = useState([]);
 
             useEffect(() => {
                 const timer = setInterval(() => setTime(new Date()), 1000);
                 return () => clearInterval(timer);
+            }, []);
+
+            useEffect(() => {
+                const todayStr = new Date().toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' });
+                const people = GROUP_LIST.filter(p => p.bday === todayStr);
+                setBirthdayPeople(people);
             }, []);
 
             const formatTime = (date) => {
@@ -236,6 +247,76 @@
                             <span className="text-2xl font-bold">{currentWeek}</span>
                         </div>
                     </div>
+                    {birthdayPeople.length > 0 && (
+                        <div className="mt-4 bg-white/20 backdrop-blur-md p-3 rounded-xl border border-white/30 flex items-start gap-3 animate-pulse">
+                            <div className="bg-yellow-400 text-yellow-900 p-2 rounded-full animate-float">
+                                <Icon name="Gift" size={20} />
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold text-white">Сьогодні День Народження! 🎉</p>
+                                <p className="text-xs text-blue-100">Вітаємо: {birthdayPeople.map(p => p.name.split(' ')[0]).join(', ')}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const UpcomingClassAlert = ({ currentWeek }) => {
+            const [alert, setAlert] = useState(null);
+
+            useEffect(() => {
+                const checkTime = () => {
+                    const now = new Date();
+                    const currentDay = now.getDay();
+                    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                    
+                    const todaysLessons = SCHEDULE[currentDay] || [];
+                    const activeLessons = todaysLessons.filter(l => checkWeek(l.weeks, currentWeek));
+
+                    let found = null;
+
+                    for (let lesson of activeLessons) {
+                        const [startH, startM] = lesson.time.split('-')[0].split(':').map(Number);
+                        const [endH, endM] = lesson.time.split('-')[1].split(':').map(Number);
+                        
+                        const startMinutes = startH * 60 + startM;
+                        const endMinutes = endH * 60 + endM;
+
+                        if (currentMinutes >= startMinutes - 5 && currentMinutes <= endMinutes) {
+                            found = { ...lesson, isRunning: currentMinutes >= startMinutes };
+                            break;
+                        }
+                    }
+                    setAlert(found);
+                };
+
+                checkTime();
+                const interval = setInterval(checkTime, 30000);
+                return () => clearInterval(interval);
+            }, [currentWeek]);
+
+            if (!alert) return null;
+
+            const teacherLink = TEACHERS_LINKS[alert.teacher];
+
+            return (
+                <div className="mx-4 mb-6 bg-indigo-600 rounded-xl p-4 shadow-xl text-white border-2 border-indigo-400 animate-pulse">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="bg-white text-indigo-600 p-2 rounded-full">
+                            <Icon name="Bell" size={20} />
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold uppercase opacity-80">{alert.isRunning ? "Пара йде зараз" : "Початок через 5 хв"}</p>
+                            <p className="font-bold leading-tight">{alert.subject}</p>
+                        </div>
+                    </div>
+                    {teacherLink && (
+                        <a href={teacherLink} target="_blank" rel="noreferrer" className="w-full bg-white text-indigo-700 py-2 rounded-lg font-bold text-center block hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                            <Icon name="Video" size={18} />
+                            Приєднатися
+                        </a>
+                    )}
                 </div>
             );
         };
@@ -443,6 +524,24 @@
         };
 
         const GroupTab = () => {
+            const getZodiacSign = (dateStr) => {
+                if (!dateStr) return null;
+                const [day, month] = dateStr.split('.').map(Number);
+                if ((month == 1 && day <= 20) || (month == 12 && day >= 22)) return "♑";
+                if ((month == 1 && day >= 21) || (month == 2 && day <= 18)) return "♒";
+                if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return "♓";
+                if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "♈";
+                if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "♉";
+                if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "♊";
+                if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "♋";
+                if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "♌";
+                if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "♍";
+                if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "♎";
+                if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "♏";
+                if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "♐";
+                return null;
+            };
+
             return (
                 <div className="px-4 pb-20">
                      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -452,11 +551,18 @@
                                     <span className="text-gray-400 font-mono text-sm w-6">{student.id}</span>
                                     <div>
                                         <p className="text-gray-800 font-medium">{student.name}</p>
-                                        {student.role && (
-                                            <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${student.role === 'Староста' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700'}`}>
-                                                {student.role}
-                                            </span>
-                                        )}
+                                        <div className="flex gap-2 mt-1">
+                                            {student.role && (
+                                                <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${student.role === 'Староста' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700'}`}>
+                                                    {student.role}
+                                                </span>
+                                            )}
+                                            {student.bday && (
+                                                <span className="text-xs px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 font-mono flex items-center gap-1">
+                                                    🎂 {student.bday} {getZodiacSign(student.bday)}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -471,12 +577,12 @@
             
             const currentWeek = useMemo(() => {
                 const now = new Date();
-                const start = new Date('2025-09-01');
+                const start = new Date('2025-09-01T00:00:00');
                 if (now < start) return 1; 
                 
-                const diffTime = Math.abs(now - start);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-                return Math.ceil((diffDays + start.getDay() - 1) / 7);
+                const diffTime = now - start;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); 
+                return Math.floor(diffDays / 7) + 1;
             }, []);
 
             const today = new Date();
@@ -485,6 +591,8 @@
             return (
                 <div className="max-w-md mx-auto min-h-screen bg-[#f3f4f6] relative">
                     <Header currentWeek={currentWeek} currentDayIndex={dayIndex} />
+                    
+                    <UpcomingClassAlert currentWeek={currentWeek} />
 
                     {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} />}
                     {activeTab === 'teachers' && <TeachersTab />}
