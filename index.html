@@ -1,0 +1,532 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студентський Портал КБЗІ-5.01</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                Calendar: <path d="M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm-14-1a1 1 0 0 1 1 1v1h10V4a1 1 0 0 1 2 0v1h1a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h1V4a1 1 0 0 1 1-1Z M19 20H5V9h14v11Z" />,
+                Users: <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M16 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75" />,
+                CreditCard: <><rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /></>,
+                Video: <><path d="M23 7l-7 5 7 5V7z" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" /></>,
+                Clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
+                Copy: <><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></>,
+                Check: <polyline points="20 6 9 17 4 12" />,
+                ChevronRight: <polyline points="9 18 15 12 9 6" />,
+                BookOpen: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></>,
+                AlertCircle: <><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></>
+            };
+
+            return (
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width={size} 
+                    height={size} 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    className={className}
+                >
+                    {icons[name] || <circle cx="12" cy="12" r="10" />}
+                </svg>
+            );
+        };
+
+        const TEACHERS_LINKS = {
+            "Івахненко": "https://us05web.zoom.us/j/9654735561?pwd=GJXbjpb8ZSyfFEnRIjDZ06bZQeO11J.1",
+            "Лимарь": "https://us04web.zoom.us/j/3578967316?pwd=MmVGdkdFcGpqVGxVZWpTbFh6SFpyZz09",
+            "Кононович": "https://zoom.us/j/5543600598?pwd=allYdjdkY1Y5QTJDM2tqNlE0Z29NZz09",
+            "Василиу": "https://us05web.zoom.us/j/86878865177?pwd=3wZXXdkal1ITZ7NFPadqZtdoJInDDf.1",
+            "Тодорова": "https://us06web.zoom.us/j/7200211619?pwd=d003dEtkMElxSjFSVjRVZFJYRnM4UT09&omn=71648387878",
+            "Голев": "https://us04web.zoom.us/j/74716679237?pwd=pK0VdhJKvUweJZn7OcqeBHjpLutMo7.1",
+            "Севастеев": "https://us04web.zoom.us/j/7340805536?pwd=enN6enp6VEw0cUJqM1RNSmtta3grQT09",
+            "Седов": "https://us04web.zoom.us/j/79240807967?pwd=jBlpYVzyqaOD2FjIQYfnsnDqyn1t9Z.1",
+            "Белова": "https://us04web.zoom.us/j/73821442465?pwd=DPeaWj07b5BO5WowQXe2yZGFl4dh1I.1",
+            "Корчинський": "https://us02web.zoom.us/j/6197950058?pwd=YllCUkYwYlZYYU9rYmdsOUNTN3RlQT09",
+            "Кильдишев": "https://us04web.zoom.us/j/77856902155?pwd=bGpPTDE2YXYzMFRCRjFVL1FGUTREQT09",
+            "Онацький": "https://us04web.zoom.us/j/79835170418?pwd=Q6aRkueJwbeqd5aIMaxxsbWQ4JTtf5.1",
+            "Басов": "https://meet.google.com/ccp-epzd-wnr",
+            "Стайкуца": "https://us05web.zoom.us/j/7655051866?pwd=YlorZnVXeDFtbHMrYjRYZFBTUlN4Zz09"
+        };
+
+        const GROUP_LIST = [
+            { id: 1, name: "Бабаченко В'ячеслав Андрійович" },
+            { id: 2, name: "Багній Діана Олександрівна" },
+            { id: 3, name: "Бескровний Володимир Янович" },
+            { id: 4, name: "Букач Владислав Миколайович" },
+            { id: 5, name: "Браткевич Максим Ігорович" },
+            { id: 6, name: "Бухтояров Артем Артемович" },
+            { id: 7, name: "Венерчук Євгеній Віталійович" },
+            { id: 8, name: "Гальцев Владислав Олександрович" },
+            { id: 9, name: "Горшкова Анастасія Єгорівна" },
+            { id: 10, name: "Демовський Артем Віталійович" },
+            { id: 11, name: "Довгань Михайло Олегович", role: "Зам. старости" },
+            { id: 12, name: "Іваненко Поліна Олегівна" },
+            { id: 13, name: "Ісак-Заде Діана Георгіївна" },
+            { id: 14, name: "Караконстантин Родіон Іванович" },
+            { id: 15, name: "Кириленко Тимофій Іванович" },
+            { id: 16, name: "Кір'як Кірілл Сергійович" },
+            { id: 17, name: "Кірова Софія Василівна" },
+            { id: 18, name: "Кузьменко Олександр Володимирович" },
+            { id: 19, name: "Марковський Олександр Анатолійович" },
+            { id: 20, name: "Маслянникова Анастасія Олександрівна" },
+            { id: 21, name: "Матвєєв Артем Олегович" },
+            { id: 22, name: "Михайленко Георгій Олександрович" },
+            { id: 23, name: "Налбат Данило Олександрович" },
+            { id: 24, name: "Патраков Євгеній Віталійович" },
+            { id: 25, name: "Петрик Сергій Юрійович" },
+            { id: 26, name: "Сільвейструк Олексій Русланович", role: "Староста" },
+            { id: 27, name: "Соболь Анастасія Сергіївна" },
+            { id: 28, name: "Шаповал Ксенія Ігорівна" },
+            { id: 29, name: "Швець Дар'я Андріївна" },
+            { id: 30, name: "Шелехов Петро Юрійович" },
+            { id: 31, name: "Український Микола Володимирович" },
+            { id: 32, name: "Лучинський Владислав Сергійович" }
+        ];
+
+        const SCHEDULE = {
+            1: [], 
+            2: [ 
+                { time: "09:35-10:55", subject: "Кіберфізична безпека об'єктів критичної інфраструктури (Пр/Лб)", weeks: "4, 5-11", teacher: "Кононович", teacher2: "Голев", room: "108" },
+                { time: "11:10-12:30", subject: "Кіберфізична безпека об'єктів критичної інфраструктури (Лк)", weeks: "3-11", teacher: "Кононович", room: "108" },
+                { time: "11:10-12:30", subject: "Кіберфізична безпека об'єктів критичної інфраструктури (Пр)", weeks: "12-16", teacher: "Кононович", room: "108" },
+                { time: "12:45-14:05", subject: "Криптологія (Лк)", weeks: "3-12", teacher: "Басов", room: "108" },
+                { time: "12:45-14:05", subject: "Криптологія (Пр)", weeks: "13-16", teacher: "Басов", room: "108" }
+            ],
+            3: [ 
+                { time: "08:00-09:20", subject: "Комплексні системи безпеки (Лк)", weeks: "3-11", teacher: "Стайкуца", room: "250" },
+                { time: "08:00-09:20", subject: "Комплексні системи безпеки (Пр)", weeks: "12-16", teacher: "Стайкуца", room: "250" },
+                { time: "09:35-10:55", subject: "Управління доступом до інформаційних ресурсів (Лк)", weeks: "3-9", teacher: "Корчинський", room: "105" },
+                { time: "09:35-10:55", subject: "Управління доступом до інформаційних ресурсів (Пр)", weeks: "10-16", teacher: "Корчинський", room: "105" },
+                { time: "11:10-12:30", subject: "Управління доступом до інформаційних ресурсів (Пр)", weeks: "4", teacher: "Корчинський", teacher2: "Белова", room: "105" },
+                { time: "11:10-12:30", subject: "Управління доступом до інформаційних ресурсів (Лб)", weeks: "5-11", teacher: "Корчинський", teacher2: "Белова", room: "105" },
+                { time: "12:45-14:05", subject: "Криптологія (Пр)", weeks: "4-5", teacher: "Басов", teacher2: "Голев", room: "107" },
+                { time: "12:45-14:05", subject: "Криптологія (Лб)", weeks: "6-11", teacher: "Басов", teacher2: "Голев", room: "107" },
+            ],
+            4: [ 
+                { time: "08:00-09:20", subject: "Спеціальні вимірювання в галузі технічного захисту інформації (Лк)", weeks: "3-11", teacher: "Онацький", room: "127" },
+                { time: "08:00-09:20", subject: "Спеціальні вимірювання в галузі технічного захисту інформації (Пр)", weeks: "12-16", teacher: "Онацький", room: "127" },
+                { time: "09:35-10:55", subject: "Спеціальні вимірювання в галузі технічного захисту інформації (Пр)", weeks: "4-5", teacher: "Онацький", teacher2: "Голев", room: "127" },
+                { time: "09:35-10:55", subject: "Спеціальні вимірювання в галузі технічного захисту інформації (Лб)", weeks: "6-11", teacher: "Онацький", teacher2: "Голев", room: "127" },
+                { time: "11:10-12:30", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Лк)", weeks: "3-12", teacher: "Кильдишев", room: "250" },
+                { time: "11:10-12:30", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Пр)", weeks: "13-17", teacher: "Кильдишев", room: "250" },
+                { time: "12:45-14:05", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Пр)", weeks: "4-7", teacher: "Кильдишев", teacher2: "Голев", room: "250" },
+                { time: "12:45-14:05", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Лб)", weeks: "8-16", teacher: "Кильдишев", teacher2: "Голев", room: "250" },
+            ],
+            5: [ 
+                { time: "09:35-10:55", subject: "Комплексні системи безпеки (Пр)", weeks: "4-7", teacher: "Стайкуца", room: "250" },
+                { time: "09:35-10:55", subject: "Комплексні системи безпеки (Лб)", weeks: "8-17", teacher: "Стайкуца", room: "250" },
+                { time: "11:10-12:30", subject: "Менеджмент в системі корпоративної інформаційної безпеки (Лк)", weeks: "3-13", teacher: "Василиу", room: "108" },
+                { time: "12:45-14:05", subject: "Менеджмент в системі корпоративної інформаційної безпеки (Пр)", weeks: "4-14", teacher: "Белова", room: "108" },
+            ],
+            6: [], 
+            0: []  
+        };
+
+        const DAYS_MAP = {
+            1: "Понеділок",
+            2: "Вівторок",
+            3: "Середа",
+            4: "Четвер",
+            5: "П'ятниця",
+            6: "Субота",
+            0: "Неділя"
+        };
+
+        const checkWeek = (weekString, currentWeek) => {
+            if (!weekString) return true; 
+            const parts = weekString.split(',').map(p => p.trim());
+            
+            for (let part of parts) {
+                if (part.includes('-')) {
+                    const [start, end] = part.split('-').map(Number);
+                    if (currentWeek >= start && currentWeek <= end) return true;
+                } else {
+                    if (Number(part) === currentWeek) return true;
+                }
+            }
+            return false;
+        };
+
+        const CopyButton = ({ text, label }) => {
+            const [copied, setCopied] = useState(false);
+
+            const handleCopy = () => {
+                const copyToClipboard = (str) => {
+                    const el = document.createElement('textarea');
+                    el.value = str;
+                    el.setAttribute('readonly', '');
+                    el.style.position = 'absolute';
+                    el.style.left = '-9999px';
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => setCopied(true))
+                        .catch(() => copyToClipboard(text));
+                } else {
+                    copyToClipboard(text);
+                    setCopied(true);
+                }
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            return (
+                <button 
+                    onClick={handleCopy}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium active:scale-95"
+                >
+                    <Icon name={copied ? "Check" : "Copy"} size={16} />
+                    {label || (copied ? "Скопійовано" : "Копіювати")}
+                </button>
+            );
+        };
+
+        const Header = ({ currentWeek, currentDayIndex }) => {
+            const [time, setTime] = useState(new Date());
+
+            useEffect(() => {
+                const timer = setInterval(() => setTime(new Date()), 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const formatTime = (date) => {
+                return date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+            };
+
+            const formatDate = (date) => {
+                return date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long' });
+            };
+
+            return (
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-b-3xl shadow-lg mb-6">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h2 className="text-blue-100 font-medium text-sm mb-1 uppercase tracking-wider">КБЗІ-5.01</h2>
+                            <h1 className="text-3xl font-bold mb-1">{formatTime(time)}</h1>
+                            <p className="text-blue-100">{DAYS_MAP[currentDayIndex]}, {formatDate(time)}</p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl text-center border border-white/20">
+                            <span className="block text-xs text-blue-100 uppercase">Тиждень</span>
+                            <span className="text-2xl font-bold">{currentWeek}</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ClassCard = ({ lesson, isNow, isNext }) => {
+            const getLink = (name) => TEACHERS_LINKS[name] || null;
+            
+            const link1 = getLink(lesson.teacher);
+            const link2 = lesson.teacher2 ? getLink(lesson.teacher2) : null;
+
+            return (
+                <div className={`relative p-4 rounded-xl mb-4 border-l-4 transition-all ${isNow ? 'bg-white border-green-500 shadow-md ring-2 ring-green-100' : 'bg-white border-blue-500 shadow-sm opacity-90'}`}>
+                    {isNow && <span className="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-bold animate-pulse">ЗАРАЗ</span>}
+                    {isNext && <span className="absolute top-2 right-2 bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-bold">ДАЛІ</span>}
+                    
+                    <div className="flex items-center gap-2 text-gray-500 text-sm font-medium mb-1">
+                        <Icon name="Clock" size={14} />
+                        {lesson.time}
+                        <span className="mx-1">•</span>
+                        <span>Ауд. {lesson.room}</span>
+                    </div>
+                    
+                    <h3 className="font-bold text-gray-800 text-lg leading-tight mb-3">{lesson.subject}</h3>
+                    
+                    <div className="flex flex-col gap-2">
+                        {lesson.teacher && (
+                            <div className="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
+                                <span className="text-sm font-medium text-gray-700">{lesson.teacher}</span>
+                                {link1 ? (
+                                    <a href={link1} target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-700 transition-colors">
+                                        <Icon name="Video" size={14} /> ZOOM
+                                    </a>
+                                ) : <span className="text-xs text-gray-400">Немає посилання</span>}
+                            </div>
+                        )}
+                        
+                        {lesson.teacher2 && (
+                            <div className="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
+                                <span className="text-sm font-medium text-gray-700">{lesson.teacher2}</span>
+                                {link2 ? (
+                                    <a href={link2} target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-700 transition-colors">
+                                        <Icon name="Video" size={14} /> ZOOM
+                                    </a>
+                                ) : <span className="text-xs text-gray-400">Немає посилання</span>}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const ScheduleTab = ({ currentWeek, currentDayIndex }) => {
+            const [selectedDay, setSelectedDay] = useState(currentDayIndex === 0 ? 1 : currentDayIndex);
+
+            const filteredLessons = useMemo(() => {
+                const lessons = SCHEDULE[selectedDay] || [];
+                return lessons.filter(l => checkWeek(l.weeks, currentWeek));
+            }, [selectedDay, currentWeek]);
+
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+            const getStatus = (timeRange) => {
+                if (selectedDay !== currentDayIndex) return 'future'; 
+                const [start, end] = timeRange.split('-').map(t => {
+                    const [h, m] = t.split(':').map(Number);
+                    return h * 60 + m;
+                });
+                
+                if (currentMinutes >= start && currentMinutes <= end) return 'now';
+                if (currentMinutes < start) return 'next';
+                return 'past';
+            };
+
+            let nextFound = false;
+
+            return (
+                <div className="pb-20">
+                    <div className="flex overflow-x-auto gap-3 px-4 pb-4 mb-2 hide-scrollbar snap-x snap-mandatory">
+                        {[1, 2, 3, 4, 5].map(dayIdx => (
+                            <button
+                                key={dayIdx}
+                                onClick={() => setSelectedDay(dayIdx)}
+                                className={`flex-shrink-0 snap-start px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                                    selectedDay === dayIdx 
+                                    ? 'bg-blue-600 text-white shadow-md transform scale-105' 
+                                    : 'bg-white text-gray-600 border border-gray-200'
+                                }`}
+                            >
+                                {DAYS_MAP[dayIdx]}
+                            </button>
+                        ))}
+                         <div className="w-4 flex-shrink-0"></div>
+                    </div>
+
+                    <div className="px-4">
+                        {filteredLessons.length > 0 ? (
+                            filteredLessons.map((lesson, idx) => {
+                                const status = getStatus(lesson.time);
+                                let isNext = false;
+                                if (status === 'next' && !nextFound) {
+                                    isNext = true;
+                                    nextFound = true;
+                                }
+                                return <ClassCard key={idx} lesson={lesson} isNow={status === 'now'} isNext={isNext} />;
+                            })
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-12 text-gray-400">
+                                <Icon name="BookOpen" size={48} className="mb-4 opacity-50" />
+                                <p>На цей день пар немає або вони не заплановані на цей тиждень.</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const TeachersTab = () => {
+            const [search, setSearch] = useState("");
+            
+            const filtered = Object.entries(TEACHERS_LINKS).filter(([name]) => 
+                name.toLowerCase().includes(search.toLowerCase())
+            );
+
+            return (
+                <div className="px-4 pb-20">
+                    <div className="sticky top-0 bg-[#f3f4f6] pt-2 pb-4 z-10">
+                        <input 
+                            type="text" 
+                            placeholder="Пошук викладача..." 
+                            className="w-full bg-white px-4 py-3 rounded-xl shadow-sm border-none focus:ring-2 focus:ring-blue-500 outline-none"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+                    <div className="grid gap-3">
+                        {filtered.map(([name, link]) => (
+                            <div key={name} className="bg-white p-4 rounded-xl shadow-sm flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                                        {name[0]}
+                                    </div>
+                                    <span className="font-medium text-gray-800">{name}</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <CopyButton text={link} label="" />
+                                    <a href={link} target="_blank" rel="noreferrer" className="bg-blue-600 text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-blue-700">
+                                        <Icon name="ChevronRight" size={20} />
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const PaymentTab = () => {
+            return (
+                <div className="px-4 pb-20">
+                    <div className="bg-white p-6 rounded-2xl shadow-sm mb-4">
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <Icon name="CreditCard" className="text-blue-600" />
+                            Реквізити оплати
+                        </h3>
+                        
+                        <div className="space-y-6">
+                            <div>
+                                <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Одержувач</label>
+                                <p className="text-gray-800 mb-2">Державний університет інтелектуальних технологій і зв’язку</p>
+                            </div>
+
+                            <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                <label className="text-xs text-blue-500 uppercase font-bold tracking-wider mb-1 block">IBAN (Рахунок)</label>
+                                <p className="text-gray-900 font-mono text-sm break-all mb-3 font-medium">UA498201720313271001201057205</p>
+                                <CopyButton text="UA498201720313271001201057205" label="Копіювати IBAN" />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">МФО</label>
+                                    <p className="font-mono text-gray-800 mb-2">820172</p>
+                                    <CopyButton text="820172" label="Код" />
+                                </div>
+                                <div>
+                                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">ЄДРПОУ</label>
+                                    <p className="font-mono text-gray-800 mb-2">43997335</p>
+                                    <CopyButton text="43997335" label="Код" />
+                                </div>
+                            </div>
+
+                            <div className="border-t pt-4">
+                                <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Призначення платежу</label>
+                                <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-100 flex gap-3 items-start">
+                                    <Icon name="AlertCircle" size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
+                                    <p className="text-sm text-yellow-800 italic">
+                                        Оплата за навчання студента <span className="font-bold">[ПІБ СТУДЕНТА]</span>, факультет, форма навчання, курс.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const GroupTab = () => {
+            return (
+                <div className="px-4 pb-20">
+                     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        {GROUP_LIST.map((student, idx) => (
+                            <div key={student.id} className={`p-4 flex items-center justify-between border-b last:border-0 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                                <div className="flex items-center gap-3">
+                                    <span className="text-gray-400 font-mono text-sm w-6">{student.id}</span>
+                                    <div>
+                                        <p className="text-gray-800 font-medium">{student.name}</p>
+                                        {student.role && (
+                                            <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${student.role === 'Староста' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700'}`}>
+                                                {student.role}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('schedule');
+            
+            const currentWeek = useMemo(() => {
+                const now = new Date();
+                const start = new Date('2025-09-01');
+                if (now < start) return 1; 
+                
+                const diffTime = Math.abs(now - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                return Math.ceil((diffDays + start.getDay() - 1) / 7);
+            }, []);
+
+            const today = new Date();
+            const dayIndex = today.getDay(); 
+
+            return (
+                <div className="max-w-md mx-auto min-h-screen bg-[#f3f4f6] relative">
+                    <Header currentWeek={currentWeek} currentDayIndex={dayIndex} />
+
+                    {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} />}
+                    {activeTab === 'teachers' && <TeachersTab />}
+                    {activeTab === 'payment' && <PaymentTab />}
+                    {activeTab === 'group' && <GroupTab />}
+
+                    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-3 flex justify-between items-center z-50 max-w-md mx-auto">
+                        <button 
+                            onClick={() => setActiveTab('schedule')}
+                            className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'schedule' ? 'text-blue-600' : 'text-gray-400'}`}
+                        >
+                            <Icon name="Calendar" size={24} />
+                            <span className="text-[10px] font-medium">Розклад</span>
+                        </button>
+                        <button 
+                            onClick={() => setActiveTab('teachers')}
+                            className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'teachers' ? 'text-blue-600' : 'text-gray-400'}`}
+                        >
+                            <Icon name="Video" size={24} />
+                            <span className="text-[10px] font-medium">Посилання</span>
+                        </button>
+                         <button 
+                            onClick={() => setActiveTab('group')}
+                            className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'group' ? 'text-blue-600' : 'text-gray-400'}`}
+                        >
+                            <Icon name="Users" size={24} />
+                            <span className="text-[10px] font-medium">Група</span>
+                        </button>
+                        <button 
+                            onClick={() => setActiveTab('payment')}
+                            className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'payment' ? 'text-blue-600' : 'text-gray-400'}`}
+                        >
+                            <Icon name="CreditCard" size={24} />
+                            <span className="text-[10px] font-medium">Оплата</span>
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
