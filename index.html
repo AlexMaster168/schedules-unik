@@ -9,14 +9,14 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
         .animate-float { animation: float 3s ease-in-out infinite; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .animate-fade-in { animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
     </style>
 </head>
 <body>
@@ -41,22 +41,13 @@
                 Bell: <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />,
                 List: <><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></>,
                 CheckSquare: <><polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>,
-                X: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+                X: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
+                GraduationCap: <path d="M22 10v6M2 10l10-5 10 5-10 5zM6 12v5c3 3 9 3 12 0v-5" />,
+                Hourglass: <><path d="M4.5 3h15M4.5 21h15M6 3v6a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" /><path d="M6 21v-6a6 6 0 0 1 6-6 6 6 0 0 1 6 6v6" /></>
             };
 
             return (
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width={size} 
-                    height={size} 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    className={className}
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
                     {icons[name] || <circle cx="12" cy="12" r="10" />}
                 </svg>
             );
@@ -67,137 +58,46 @@
                 fullName: "Моніторинг та аудит інформаційно-комунікаційних систем",
                 shortName: "МАІКС",
                 teacher: "Кільдішев В.Й. + Голев Д.В.",
-                tasks: [
-                    "КУРСОВА РОБОТА",
-                    "Лабораторна робота №1",
-                    "Лабораторна робота №2",
-                    "Лабораторна робота №3",
-                    "Лабораторна робота №4",
-                    "Лабораторна робота №5",
-                    "Лабораторна робота №6",
-                    "Лабораторна робота №7",
-                    "Лабораторна робота №8",
-                    "Лабораторна робота №9",
-                    "Лабораторна робота №10",
-                    "Конспект по лекціям"
-                ]
+                tasks: ["КУРСОВА РОБОТА", "Лабораторна робота №1", "Лабораторна робота №2", "Лабораторна робота №3", "Лабораторна робота №4", "Лабораторна робота №5", "Лабораторна робота №6", "Лабораторна робота №7", "Лабораторна робота №8", "Лабораторна робота №9", "Лабораторна робота №10", "Конспект по лекціям"]
             },
             "КБОКІ": {
                 fullName: "Кіберфізична безпека об'єктів критичної інфраструктури",
                 shortName: "КФБОКІ",
                 teacher: "Кононович В.Г. + Голев Д.В.",
-                tasks: [
-                    "Лабораторна робота №1",
-                    "Лабораторна робота №2",
-                    "Лабораторна робота №3",
-                    "Лабораторна робота №4",
-                    "Лабораторна робота №5",
-                    "Лабораторна робота №6",
-                    "Лабораторна робота №7",
-                    "Практика 1", 
-                    "Практика 2",
-                    "Практика 3", 
-                    "Практика 4", 
-                    "Практика 5", 
-                    "Практика 6",
-                    "Практика 7", 
-                    "Практика 8",
-                    "Тест 1", 
-                    "Тест 2", 
-                    "Тест 3", 
-                    "Тест 4", 
-                    "Тест 5", 
-                    "Тест 6", 
-                    "Тест 7", 
-                    "Тест 8", 
-                    "Тест 9"
-                ]
+                tasks: ["Лабораторна робота №1", "Лабораторна робота №2", "Лабораторна робота №3", "Лабораторна робота №4", "Лабораторна робота №5", "Лабораторна робота №6", "Лабораторна робота №7", "Практика 1", "Практика 2", "Практика 3", "Практика 4", "Практика 5", "Практика 6", "Практика 7", "Практика 8", "Тест 1", "Тест 2", "Тест 3", "Тест 4", "Тест 5", "Тест 6", "Тест 7", "Тест 8", "Тест 9"]
             },
             "МСКІБ": {
                 fullName: "Менеджмент в системі корпоративної інформаційної безпеки",
                 shortName: "МСКБ",
                 teacher: "Васіліу Є.В. / Бєлова Ю.В.",
-                // note: "Моніторити нові завдання до 15 тижня",
-                tasks: [
-                    "Завдання по графам (від Васіліу)",
-                    "Практична робота №1",
-                    "Практична робота №2",
-                    "Практична робота №3",
-                    "Практична робота №4",
-                    "Практична робота №5",
-                    "Практична робота №6",
-                    "Практична робота №7",
-                    "Практична робота №8",
-                    "Практична робота №9",
-                    "Практична робота №10"
-                ]
+                tasks: ["Завдання по графам (від Васіліу)", "Практична робота №1", "Практична робота №2", "Практична робота №3", "Практична робота №4", "Практична робота №5", "Практична робота №6", "Практична робота №7", "Практична робота №8", "Практична робота №9", "Практична робота №10"]
             },
             "УДІР": {
                 fullName: "Управління доступом до інформаційних ресурсів",
                 shortName: "УДІР",
                 teacher: "Корчинський В.В.",
                 note: "Моніторити нові лаби до 16 тижня",
-                tasks: [
-                    "Практична №1",
-                    "Практична №2",
-                    "Лабораторна №1-2",
-                    "Лабораторна №3-4",
-                    "Лабораторна №5-6"
-                ]
+                tasks: ["Практична №1", "Практична №2", "Лабораторна №1-2", "Лабораторна №3-4", "Лабораторна №5-6"]
             },
             "СВ": {
                 fullName: "Спеціальні вимірювання в галузі технічного захисту інформації",
                 shortName: "СВ",
                 teacher: "Онацький О.В.",
-                tasks: [
-                    "Комплексне завдання по акту обстеження",
-                    "Лабораторна робота №1",
-                    "Лабораторна робота №2",
-                    "Лабораторна робота №3",
-                    "Лабораторна робота №4",
-                    "Лабораторна робота №5",
-                    "Лабораторна робота №6"
-                ]
+                tasks: ["Комплексне завдання по акту обстеження", "Лабораторна робота №1", "Лабораторна робота №2", "Лабораторна робота №3", "Лабораторна робота №4", "Лабораторна робота №5", "Лабораторна робота №6"]
             },
             "Криптологія": {
                 fullName: "Криптологія",
                 shortName: "Криптологія",
                 teacher: "Басов В.Є.",
-                tasks: [
-                    "Лабораторна робота №1",
-                    "Лабораторна робота №2",
-                    "Лабораторна робота №3",
-                    "Лабораторна робота №4",
-                    "Лабораторна робота №5",
-                    "Практична №1",
-                    "Практична №2",
-                    "Практична №3",
-                    "Практична №4",
-                    "Практична №5"
-                ]
+                tasks: ["Лабораторна робота №1", "Лабораторна робота №2", "Лабораторна робота №3", "Лабораторна робота №4", "Лабораторна робота №5", "Практична №1", "Практична №2", "Практична №3", "Практична №4", "Практична №5"]
             },
             "КСБ": {
                 fullName: "Комплексні системи безпеки",
                 shortName: "КСБ",
                 teacher: "Стайкуца С.В.",
                 note: "Можуть додати задачі до 17 тижня",
-                tasks: [
-                    "Практична №1",
-                    "Практична №2",
-                    "Практична №3",
-                    "Практична №4"
-                ]
+                tasks: ["Практична №1", "Практична №2", "Практична №3", "Практична №4"]
             }
-        };
-
-        const SCHEDULE_MAPPING = {
-            "Моніторинг та аудит інформаційно-комунікаційних систем": "МАІКС",
-            "Кіберфізична безпека об'єктів критичної інфраструктури": "КФБОКІ",
-            "Менеджмент в системі корпоративної інформаційної безпеки": "МСКБ",
-            "Управління доступом до інформаційних ресурсів": "УДІР",
-            "Спеціальні вимірювання в галузі технічного захисту інформації": "СВ",
-            "Криптологія": "Криптологія",
-            "Комплексні системи безпеки": "КСБ"
         };
 
         const TEACHERS_LINKS = {
@@ -251,6 +151,22 @@
             { id: 32, name: "Лучинський Владислав Сергійович", bday: "07.03" }
         ];
 
+        const EXAM_SCHEDULE = [
+            { id: 'zach_ksb', date: "26.12.2025", time: "14:20", subject: "Комплексні системи безпеки (КСБ)", type: "Залік", teacher: "Стайкуца С.В.", room: "Online/250" },
+            { id: 'cons_sv', date: "29.12.2025", time: "10:00", subject: "Спеціальні вимірювання (СВ)", type: "Консультація", teacher: "Онацький О.В." },
+            { id: 'exam_sv', date: "30.12.2025", time: "10:00", subject: "Спеціальні вимірювання в галузі ТЗІ", type: "Іспит", teacher: "Онацький О.В." },
+            { id: 'cons_udir', date: "02.01.2026", time: "10:00", subject: "Управління доступом (УДІР)", type: "Консультація", teacher: "Корчинський В.В." },
+            { id: 'exam_udir', date: "03.01.2026", time: "10:00", subject: "Управління доступом до інф. ресурсів", type: "Іспит", teacher: "Корчинський В.В." },
+            { id: 'cons_kfboki', date: "05.01.2026", time: "10:00", subject: "Кіберфізична безпека (КФБОКІ)", type: "Консультація", teacher: "Кононович В.Г." },
+            { id: 'exam_kfboki', date: "06.01.2026", time: "10:00", subject: "Кіберфізична безпека об'єктів КІ", type: "Іспит", teacher: "Кононович В.Г." },
+            { id: 'cons_crypto', date: "08.01.2026", time: "10:00", subject: "Криптологія", type: "Консультація", teacher: "Басов В.Є." },
+            { id: 'exam_crypto', date: "09.01.2026", time: "10:00", subject: "Криптологія", type: "Іспит", teacher: "Басов В.Є." },
+            { id: 'cons_maiks', date: "12.01.2026", time: "10:00", subject: "Моніторинг та аудит (МАІКС)", type: "Консультація", teacher: "Кільдішев В.Й." },
+            { id: 'exam_maiks', date: "13.01.2026", time: "10:00", subject: "Моніторинг та аудит ІКС", type: "Іспит", teacher: "Кільдішев В.Й." },
+            { id: 'cons_mskib', date: "15.01.2026", time: "10:00", subject: "Менеджмент в системі КІБ", type: "Консультація", teacher: "Васіліу Є.В." },
+            { id: 'exam_mskib', date: "16.01.2026", time: "10:00", subject: "Менеджмент в системі КІБ", type: "Іспит", teacher: "Васіліу Є.В." },
+        ];
+
         const SCHEDULE = {
             1: [], 
             2: [ 
@@ -276,13 +192,13 @@
                 { time: "09:35-10:55", subject: "Спеціальні вимірювання в галузі технічного захисту інформації (Пр)", weeks: "4-5", teacher: "Онацький Олексій Віталійович", teacher2: "Голев Денис Володимирович", room: "127" },
                 { time: "09:35-10:55", subject: "Спеціальні вимірювання в галузі технічного захисту інформації (Лб)", weeks: "6-11", teacher: "Онацький Олексій Віталійович", teacher2: "Голев Денис Володимирович", room: "127" },
                 { time: "11:10-12:30", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Лк)", weeks: "3-12", teacher: "Кільдішев Віталій Йосипович", room: "250" },
-                { time: "11:10-12:30", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Пр)", weeks: "13-17", teacher: "Кільдішев Віталій Йосипович", room: "250" },
+                { time: "11:10-12:30", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Пр)", weeks: "13-16", teacher: "Кільдішев Віталій Йосипович", room: "250" },
                 { time: "12:45-14:05", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Пр)", weeks: "4-7", teacher: "Кільдішев Віталій Йосипович", teacher2: "Голев Денис Володимирович", room: "250" },
                 { time: "12:45-14:05", subject: "Моніторинг та аудит інформаційно-комунікаційних систем (Лб)", weeks: "8-16", teacher: "Кільдішев Віталій Йосипович", teacher2: "Голев Денис Володимирович", room: "250" },
             ],
             5: [ 
                 { time: "09:35-10:55", subject: "Комплексні системи безпеки (Пр)", weeks: "4-7", teacher: "Стайкуца Сергій Володимирович", room: "250" },
-                { time: "09:35-10:55", subject: "Комплексні системи безпеки (Лб)", weeks: "8-17", teacher: "Стайкуца Сергій Володимирович", room: "250" },
+                { time: "09:35-10:55", subject: "Комплексні системи безпеки (Лб)", weeks: "8-16", teacher: "Стайкуца Сергій Володимирович", room: "250" },
                 { time: "11:10-12:30", subject: "Менеджмент в системі корпоративної інформаційної безпеки (Лк)", weeks: "3-13", teacher: "Васіліу Євген Вікторович", room: "108" },
                 { time: "12:45-14:05", subject: "Менеджмент в системі корпоративної інформаційної безпеки (Пр)", weeks: "4-15", teacher: "Бєлова Юлія Володимирівна", room: "108" },
             ],
@@ -291,19 +207,12 @@
         };
 
         const DAYS_MAP = {
-            1: "Понеділок",
-            2: "Вівторок",
-            3: "Середа",
-            4: "Четвер",
-            5: "П'ятниця",
-            6: "Субота",
-            0: "Неділя"
+            1: "Понеділок", 2: "Вівторок", 3: "Середа", 4: "Четвер", 5: "П'ятниця", 6: "Субота", 0: "Неділя"
         };
 
         const checkWeek = (weekString, currentWeek) => {
             if (!weekString) return true; 
             const parts = weekString.split(',').map(p => p.trim());
-            
             for (let part of parts) {
                 if (part.includes('-')) {
                     const [start, end] = part.split('-').map(Number);
@@ -317,7 +226,6 @@
 
         const CopyButton = ({ text, label }) => {
             const [copied, setCopied] = useState(false);
-
             const handleCopy = () => {
                 const copyToClipboard = (str) => {
                     const el = document.createElement('textarea');
@@ -330,23 +238,16 @@
                     document.execCommand('copy');
                     document.body.removeChild(el);
                 };
-
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text)
-                        .then(() => setCopied(true))
-                        .catch(() => copyToClipboard(text));
+                    navigator.clipboard.writeText(text).then(() => setCopied(true)).catch(() => copyToClipboard(text));
                 } else {
                     copyToClipboard(text);
                     setCopied(true);
                 }
                 setTimeout(() => setCopied(false), 2000);
             };
-
             return (
-                <button 
-                    onClick={handleCopy}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium active:scale-95"
-                >
+                <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium active:scale-95">
                     <Icon name={copied ? "Check" : "Copy"} size={16} />
                     {label || (copied ? "Скопійовано" : "Копіювати")}
                 </button>
@@ -380,44 +281,27 @@
                                 </div>
                                 <p className="text-sm text-gray-500">{details.fullName}</p>
                             </div>
-                            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
-                                <Icon name="X" size={24} />
-                            </button>
+                            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full"><Icon name="X" size={24} /></button>
                         </div>
-
                         <div className="mb-6">
                             <p className="text-sm font-medium text-gray-700 mb-2">Викладач:</p>
                             <p className="text-gray-900 bg-gray-50 p-2 rounded-lg text-sm">{details.teacher}</p>
                         </div>
-
                         {details.note && (
                             <div className="mb-4 p-3 bg-yellow-50 border border-yellow-100 rounded-lg flex gap-2 items-start">
                                 <Icon name="AlertCircle" size={16} className="text-yellow-600 mt-0.5 flex-shrink-0" />
                                 <p className="text-xs text-yellow-800">{details.note}</p>
                             </div>
                         )}
-
                         <div>
                             <p className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Завдання ({Object.values(completedTasks).filter(Boolean).length}/{details.tasks.length})</p>
                             <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
                                 {details.tasks.map((task, idx) => (
-                                    <div 
-                                        key={idx} 
-                                        onClick={() => toggleTask(task)}
-                                        className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-                                            completedTasks[task] 
-                                            ? 'bg-green-50 border-green-200' 
-                                            : 'bg-white border-gray-200 hover:border-blue-300'
-                                        }`}
-                                    >
-                                        <div className={`w-5 h-5 rounded border flex items-center justify-center flex-shrink-0 ${
-                                            completedTasks[task] ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300'
-                                        }`}>
+                                    <div key={idx} onClick={() => toggleTask(task)} className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${completedTasks[task] ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200 hover:border-blue-300'}`}>
+                                        <div className={`w-5 h-5 rounded border flex items-center justify-center flex-shrink-0 ${completedTasks[task] ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300'}`}>
                                             {completedTasks[task] && <Icon name="Check" size={14} />}
                                         </div>
-                                        <span className={`text-sm ${completedTasks[task] ? 'text-green-700 line-through' : 'text-gray-700'}`}>
-                                            {task}
-                                        </span>
+                                        <span className={`text-sm ${completedTasks[task] ? 'text-green-700 line-through' : 'text-gray-700'}`}>{task}</span>
                                     </div>
                                 ))}
                             </div>
@@ -437,13 +321,8 @@
                 setBirthdayPeople(people);
             }, [now]);
 
-            const formatTime = (date) => {
-                return date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
-            };
-
-            const formatDate = (date) => {
-                return date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long' });
-            };
+            const formatTime = (date) => date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+            const formatDate = (date) => date.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long' });
 
             return (
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-b-3xl shadow-lg mb-6">
@@ -460,9 +339,7 @@
                     </div>
                     {birthdayPeople.length > 0 && (
                         <div className="mt-4 bg-white/20 backdrop-blur-md p-3 rounded-xl border border-white/30 flex items-start gap-3 animate-pulse">
-                            <div className="bg-yellow-400 text-yellow-900 p-2 rounded-full animate-float">
-                                <Icon name="Gift" size={20} />
-                            </div>
+                            <div className="bg-yellow-400 text-yellow-900 p-2 rounded-full animate-float"><Icon name="Gift" size={20} /></div>
                             <div>
                                 <p className="text-sm font-bold text-white">Сьогодні День Народження! 🎉</p>
                                 <p className="text-xs text-blue-100">Вітаємо: {birthdayPeople.map(p => p.name.split(' ')[0]).join(', ')}</p>
@@ -473,61 +350,62 @@
             );
         };
 
-        const UpcomingClassAlert = ({ currentWeek, now }) => {
-            const [alert, setAlert] = useState(null);
-
+        const CountdownTimer = ({ targetDate, title }) => {
+            const [timeLeft, setTimeLeft] = useState("");
             useEffect(() => {
-                if (!now) return;
-                
-                const currentDay = now.getDay();
-                const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                
-                const todaysLessons = SCHEDULE[currentDay] || [];
-                const activeLessons = todaysLessons.filter(l => checkWeek(l.weeks, currentWeek));
-
-                let found = null;
-
-                for (let lesson of activeLessons) {
-                    const [startH, startM] = lesson.time.split('-')[0].split(':').map(Number);
-                    const [endH, endM] = lesson.time.split('-')[1].split(':').map(Number);
-                    
-                    const startMinutes = startH * 60 + startM;
-                    const endMinutes = endH * 60 + endM;
-
-                    if (currentMinutes >= startMinutes - 5 && currentMinutes <= endMinutes) {
-                        found = { 
-                            ...lesson, 
-                            isRunning: currentMinutes >= startMinutes,
-                            minutesUntilStart: startMinutes - currentMinutes
-                        };
-                        break;
-                    }
-                }
-                setAlert(found);
-            }, [currentWeek, now]);
-
-            if (!alert) return null;
-
-            const teacherLink = TEACHERS_LINKS[alert.teacher];
+                const interval = setInterval(() => {
+                    const now = new Date();
+                    const diff = targetDate - now;
+                    if (diff <= 0) { setTimeLeft("Завершено"); return; }
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    setTimeLeft(`${days}д ${hours}г ${minutes}хв`);
+                }, 1000);
+                return () => clearInterval(interval);
+            }, [targetDate]);
 
             return (
-                <div className="mx-4 mb-6 bg-indigo-600 rounded-xl p-4 shadow-xl text-white border-2 border-indigo-400 animate-pulse">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="bg-white text-indigo-600 p-2 rounded-full">
-                            <Icon name="Bell" size={20} />
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold uppercase opacity-80">
-                                {alert.isRunning ? "Пара йде зараз" : `Початок через ${alert.minutesUntilStart} хв`}
-                            </p>
-                            <p className="font-bold leading-tight">{alert.subject}</p>
+                <div className="bg-indigo-900 text-white p-4 rounded-xl shadow-lg mb-4 flex items-center justify-between border border-indigo-700 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4"><Icon name="Hourglass" size={80} /></div>
+                    <div className="relative z-10">
+                        <p className="text-indigo-200 text-xs uppercase font-bold tracking-wider mb-1">Наступна подія: {title}</p>
+                        <p className="text-2xl font-mono font-bold">{timeLeft}</p>
+                    </div>
+                </div>
+            );
+        };
+
+        const ExamCard = ({ exam }) => {
+            const parseDate = (d) => {
+                const [day, month, year] = d.split('.').map(Number);
+                return new Date(year, month - 1, day);
+            };
+            const dateObj = parseDate(exam.date);
+            const isToday = new Date().toDateString() === dateObj.toDateString();
+            const isPast = new Date() > new Date(dateObj.getTime() + 24 * 60 * 60 * 1000);
+            
+            let colorClass = "border-l-4 ";
+            let bgClass = "bg-white";
+            if (exam.type === "Іспит") { colorClass += "border-red-500"; if (isToday) bgClass = "bg-red-50"; }
+            else if (exam.type === "Консультація") { colorClass += "border-blue-400"; }
+            else { colorClass += "border-yellow-500"; }
+            if (isPast) { bgClass = "bg-gray-100 opacity-60 grayscale"; colorClass = "border-l-4 border-gray-400"; }
+            const teacherLink = Object.entries(TEACHERS_LINKS).find(([name]) => exam.teacher?.includes(name.split(' ')[0]))?.[1];
+
+            return (
+                <div className={`p-4 rounded-xl shadow-sm mb-3 relative transition-all ${bgClass} ${colorClass}`}>
+                    <div className="flex justify-between items-start mb-2">
+                        <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-wider ${exam.type === 'Іспит' ? 'bg-red-100 text-red-700' : exam.type === 'Консультація' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-800'}`}>{exam.type}</span>
+                        <div className="text-right">
+                            <p className="text-lg font-bold text-gray-800">{exam.date.slice(0, 5)}</p>
+                            <p className="text-sm text-gray-500">{exam.time}</p>
                         </div>
                     </div>
-                    {teacherLink && (
-                        <a href={teacherLink} target="_blank" rel="noreferrer" className="w-full bg-white text-indigo-700 py-2 rounded-lg font-bold text-center block hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
-                            <Icon name="Video" size={18} />
-                            Приєднатися
-                        </a>
+                    <h3 className="font-bold text-gray-900 mb-1">{exam.subject}</h3>
+                    {exam.teacher && <p className="text-sm text-gray-600 mb-2">{exam.teacher}</p>}
+                    {teacherLink && !isPast && (
+                        <a href={teacherLink} target="_blank" className="inline-flex items-center gap-2 text-sm text-blue-600 font-medium hover:underline"><Icon name="Video" size={16} /> Підключитися</a>
                     )}
                 </div>
             );
@@ -537,54 +415,30 @@
             const getLink = (name) => TEACHERS_LINKS[name] || null;
             const link1 = getLink(lesson.teacher);
             const link2 = lesson.teacher2 ? getLink(lesson.teacher2) : null;
-
+            const SCHEDULE_MAPPING = { "Моніторинг та аудит інформаційно-комунікаційних систем": "МАІКС", "Кіберфізична безпека об'єктів критичної інфраструктури": "КФБОКІ", "Менеджмент в системі корпоративної інформаційної безпеки": "МСКБ", "Управління доступом до інформаційних ресурсів": "УДІР", "Спеціальні вимірювання в галузі технічного захисту інформації": "СВ", "Криптологія": "Криптологія", "Комплексні системи безпеки": "КСБ" };
             const getSubjectKey = (subjectName) => {
                 const cleanName = subjectName.replace(/\s*\(.*?\)\s*/g, '').trim();
                 return SCHEDULE_MAPPING[cleanName] || null;
             };
-            
             const subjectKey = getSubjectKey(lesson.subject);
 
             return (
                 <div className={`relative p-4 rounded-xl mb-4 border-l-4 transition-all ${isNow ? 'bg-white border-green-500 shadow-md ring-2 ring-green-100' : 'bg-white border-blue-500 shadow-sm opacity-90'}`}>
                     {isNow && <span className="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-bold animate-pulse">ЗАРАЗ</span>}
                     {isNext && <span className="absolute top-2 right-2 bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-bold">ДАЛІ</span>}
-                    
-                    <div className="flex items-center gap-2 text-gray-500 text-sm font-medium mb-1">
-                        <Icon name="Clock" size={14} />
-                        {lesson.time}
-                        <span className="mx-1">•</span>
-                        <span>Ауд. {lesson.room}</span>
-                    </div>
-                    
-                    <h3 
-                        className={`font-bold text-gray-800 text-lg leading-tight mb-3 ${subjectKey ? 'cursor-pointer hover:text-blue-600 hover:underline decoration-dashed underline-offset-4' : ''}`}
-                        onClick={() => subjectKey && onSubjectClick(subjectKey)}
-                    >
-                        {lesson.subject}
-                        {subjectKey && <span className="inline-block ml-2 text-gray-400"><Icon name="CheckSquare" size={14} /></span>}
-                    </h3>
-                    
+                    <div className="flex items-center gap-2 text-gray-500 text-sm font-medium mb-1"><Icon name="Clock" size={14} />{lesson.time}<span className="mx-1">•</span><span>Ауд. {lesson.room}</span></div>
+                    <h3 className={`font-bold text-gray-800 text-lg leading-tight mb-3 ${subjectKey ? 'cursor-pointer hover:text-blue-600 hover:underline decoration-dashed underline-offset-4' : ''}`} onClick={() => subjectKey && onSubjectClick(subjectKey)}>{lesson.subject}{subjectKey && <span className="inline-block ml-2 text-gray-400"><Icon name="CheckSquare" size={14} /></span>}</h3>
                     <div className="flex flex-col gap-2">
                         {lesson.teacher && (
                             <div className="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
                                 <span className="text-sm font-medium text-gray-700">{lesson.teacher}</span>
-                                {link1 ? (
-                                    <a href={link1} target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-700 transition-colors">
-                                        <Icon name="Video" size={14} /> ZOOM
-                                    </a>
-                                ) : <span className="text-xs text-gray-400">Немає посилання</span>}
+                                {link1 ? (<a href={link1} target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-700 transition-colors"><Icon name="Video" size={14} /> ZOOM</a>) : <span className="text-xs text-gray-400">Немає посилання</span>}
                             </div>
                         )}
-                        
                         {lesson.teacher2 && (
                             <div className="flex items-center justify-between bg-gray-50 p-2 rounded-lg">
                                 <span className="text-sm font-medium text-gray-700">{lesson.teacher2}</span>
-                                {link2 ? (
-                                    <a href={link2} target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-700 transition-colors">
-                                        <Icon name="Video" size={14} /> ZOOM
-                                    </a>
-                                ) : <span className="text-xs text-gray-400">Немає посилання</span>}
+                                {link2 ? (<a href={link2} target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-bold hover:bg-blue-700 transition-colors"><Icon name="Video" size={14} /> ZOOM</a>) : <span className="text-xs text-gray-400">Немає посилання</span>}
                             </div>
                         )}
                     </div>
@@ -592,7 +446,8 @@
             );
         };
 
-        const ScheduleTab = ({ currentWeek, currentDayIndex, now, onSubjectClick }) => {
+        const ScheduleTab = ({ currentWeek, currentDayIndex, now, onSubjectClick, sessionMode }) => {
+            const [viewMode, setViewMode] = useState(sessionMode ? 'session' : 'classes');
             const [selectedDay, setSelectedDay] = useState(currentDayIndex === 0 ? 1 : currentDayIndex);
             const daysContainerRef = useRef(null);
 
@@ -600,9 +455,7 @@
                 if (daysContainerRef.current) {
                     const buttons = daysContainerRef.current.querySelectorAll('button');
                     const btnIndex = selectedDay - 1;
-                    if (buttons[btnIndex]) {
-                        buttons[btnIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                    }
+                    if (buttons[btnIndex]) buttons[btnIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 }
             }, [selectedDay]);
 
@@ -612,93 +465,93 @@
             }, [selectedDay, currentWeek]);
 
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
             const getStatus = (timeRange) => {
                 if (selectedDay !== currentDayIndex) return 'future'; 
-                const [start, end] = timeRange.split('-').map(t => {
-                    const [h, m] = t.split(':').map(Number);
-                    return h * 60 + m;
-                });
-                
+                const [start, end] = timeRange.split('-').map(t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; });
                 if (currentMinutes >= start && currentMinutes <= end) return 'now';
                 if (currentMinutes < start) return 'next';
                 return 'past';
             };
-
             let nextFound = false;
+
+            const nextExam = useMemo(() => {
+                const nowTime = new Date();
+                return EXAM_SCHEDULE.map(e => {
+                    const [d, m, y] = e.date.split('.');
+                    const [hr, min] = e.time.split(':');
+                    return { ...e, dateObj: new Date(y, m-1, d, hr, min) };
+                }).sort((a,b) => a.dateObj - b.dateObj).find(e => e.dateObj > nowTime);
+            }, []);
 
             return (
                 <div className="pb-20">
-                    <div ref={daysContainerRef} className="flex overflow-x-auto gap-3 px-4 pb-4 mb-2 hide-scrollbar snap-x snap-mandatory">
-                        {[1, 2, 3, 4, 5].map(dayIdx => (
-                            <button
-                                key={dayIdx}
-                                onClick={() => setSelectedDay(dayIdx)}
-                                className={`flex-shrink-0 snap-start px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                                    selectedDay === dayIdx 
-                                    ? 'bg-blue-600 text-white shadow-md transform scale-105' 
-                                    : 'bg-white text-gray-600 border border-gray-200'
-                                }`}
-                            >
-                                {DAYS_MAP[dayIdx]}
-                            </button>
-                        ))}
-                         <div className="w-4 flex-shrink-0"></div>
+                     <div className="px-4 mb-4">
+                        <div className="bg-gray-200 p-1 rounded-lg flex text-sm font-medium">
+                            <button onClick={() => setViewMode('classes')} className={`flex-1 py-2 rounded-md transition-all ${viewMode === 'classes' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}>Пари (Тиж {currentWeek})</button>
+                            <button onClick={() => setViewMode('session')} className={`flex-1 py-2 rounded-md transition-all flex items-center justify-center gap-2 ${viewMode === 'session' ? 'bg-white shadow text-indigo-700' : 'text-gray-500'}`}><Icon name="GraduationCap" size={16} /> Сесія</button>
+                        </div>
                     </div>
 
-                    <div className="px-4">
-                        {filteredLessons.length > 0 ? (
-                            filteredLessons.map((lesson, idx) => {
-                                const status = getStatus(lesson.time);
-                                let isNext = false;
-                                if (status === 'next' && !nextFound) {
-                                    isNext = true;
-                                    nextFound = true;
-                                }
-                                return <ClassCard key={idx} lesson={lesson} isNow={status === 'now'} isNext={isNext} onSubjectClick={onSubjectClick} />;
-                            })
-                        ) : (
-                            <div className="flex flex-col items-center justify-center py-12 text-gray-400">
-                                <Icon name="BookOpen" size={48} className="mb-4 opacity-50" />
-                                <p>На цей день пар немає або вони не заплановані на цей тиждень.</p>
-                            </div>
-                        )}
-                    </div>
+                    {viewMode === 'session' ? (
+                        <div className="px-4 animate-fade-in">
+                            {nextExam && <CountdownTimer targetDate={nextExam.dateObj} title={nextExam.subject.split('(')[0]} />}
+                            <h3 className="text-gray-500 font-bold uppercase text-xs tracking-wider mb-3 mt-6">Розклад сесії</h3>
+                            {EXAM_SCHEDULE.map(item => <ExamCard key={item.id} exam={item} />)}
+                            <div className="text-center p-4 text-gray-400 text-sm">Удачі на іспитах! 🍀</div>
+                        </div>
+                    ) : (
+                        <div className="animate-fade-in">
+                            {currentWeek > 16 ? (
+                                <div className="px-4 py-8 text-center">
+                                    <div className="bg-yellow-50 text-yellow-800 p-4 rounded-xl border border-yellow-200 mb-4">
+                                        <p className="font-bold">Навчальний семестр завершено!</p>
+                                        <p className="text-sm">Перейдіть на вкладку "Сесія" для перегляду розкладу іспитів.</p>
+                                    </div>
+                                    <button onClick={() => setViewMode('session')} className="text-blue-600 font-medium underline">Перейти до сесії</button>
+                                </div>
+                            ) : (
+                                <>
+                                    <div ref={daysContainerRef} className="flex overflow-x-auto gap-3 px-4 pb-4 mb-2 hide-scrollbar snap-x snap-mandatory">
+                                        {[1, 2, 3, 4, 5].map(dayIdx => (
+                                            <button key={dayIdx} onClick={() => setSelectedDay(dayIdx)} className={`flex-shrink-0 snap-start px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${selectedDay === dayIdx ? 'bg-blue-600 text-white shadow-md transform scale-105' : 'bg-white text-gray-600 border border-gray-200'}`}>{DAYS_MAP[dayIdx]}</button>
+                                        ))}
+                                        <div className="w-4 flex-shrink-0"></div>
+                                    </div>
+                                    <div className="px-4">
+                                        {filteredLessons.length > 0 ? filteredLessons.map((lesson, idx) => {
+                                            const status = getStatus(lesson.time);
+                                            let isNext = false;
+                                            if (status === 'next' && !nextFound) { isNext = true; nextFound = true; }
+                                            return <ClassCard key={idx} lesson={lesson} isNow={status === 'now'} isNext={isNext} onSubjectClick={onSubjectClick} />;
+                                        }) : <div className="flex flex-col items-center justify-center py-12 text-gray-400"><Icon name="BookOpen" size={48} className="mb-4 opacity-50" /><p>На цей день пар немає.</p></div>}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             );
         };
 
         const TeachersTab = () => {
             const [search, setSearch] = useState("");
-            const filtered = Object.entries(TEACHERS_LINKS).filter(([name]) => 
-                name.toLowerCase().includes(search.toLowerCase())
-            );
+            const filtered = Object.entries(TEACHERS_LINKS).filter(([name]) => name.toLowerCase().includes(search.toLowerCase()));
 
             return (
                 <div className="px-4 pb-20">
                     <div className="sticky top-0 bg-[#f3f4f6] pt-2 pb-4 z-10">
-                        <input 
-                            type="text" 
-                            placeholder="Пошук викладача..." 
-                            className="w-full bg-white px-4 py-3 rounded-xl shadow-sm border-none focus:ring-2 focus:ring-blue-500 outline-none"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
+                        <input type="text" placeholder="Пошук викладача..." className="w-full bg-white px-4 py-3 rounded-xl shadow-sm border-none focus:ring-2 focus:ring-blue-500 outline-none" value={search} onChange={(e) => setSearch(e.target.value)} />
                     </div>
                     <div className="grid gap-3">
                         {filtered.map(([name, link]) => (
                             <div key={name} className="bg-white p-4 rounded-xl shadow-sm flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                                        {name[0]}
-                                    </div>
+                                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">{name[0]}</div>
                                     <span className="font-medium text-gray-800">{name}</span>
                                 </div>
                                 <div className="flex gap-2">
                                     <CopyButton text={link} label="" />
-                                    <a href={link} target="_blank" rel="noreferrer" className="bg-blue-600 text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-blue-700">
-                                        <Icon name="ChevronRight" size={20} />
-                                    </a>
+                                    <a href={link} target="_blank" rel="noreferrer" className="bg-blue-600 text-white w-9 h-9 flex items-center justify-center rounded-lg hover:bg-blue-700"><Icon name="ChevronRight" size={20} /></a>
                                 </div>
                             </div>
                         ))}
@@ -711,39 +564,23 @@
             return (
                 <div className="px-4 pb-20">
                     <div className="bg-white p-6 rounded-2xl shadow-sm mb-4">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                            <Icon name="CreditCard" className="text-blue-600" />
-                            Реквізити оплати
-                        </h3>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><Icon name="CreditCard" className="text-blue-600" />Реквізити оплати</h3>
                         <div className="space-y-6">
-                            <div>
-                                <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Одержувач</label>
-                                <p className="text-gray-800 mb-2">Державний університет інтелектуальних технологій і зв’язку</p>
-                            </div>
+                            <div><label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Одержувач</label><p className="text-gray-800 mb-2">Державний університет інтелектуальних технологій і зв’язку</p></div>
                             <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
                                 <label className="text-xs text-blue-500 uppercase font-bold tracking-wider mb-1 block">IBAN (Рахунок)</label>
                                 <p className="text-gray-900 font-mono text-sm break-all mb-3 font-medium">UA498201720313271001201057205</p>
                                 <CopyButton text="UA498201720313271001201057205" label="Копіювати IBAN" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">МФО</label>
-                                    <p className="font-mono text-gray-800 mb-2">820172</p>
-                                    <CopyButton text="820172" label="Код" />
-                                </div>
-                                <div>
-                                    <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">ЄДРПОУ</label>
-                                    <p className="font-mono text-gray-800 mb-2">43997335</p>
-                                    <CopyButton text="43997335" label="Код" />
-                                </div>
+                                <div><label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">МФО</label><p className="font-mono text-gray-800 mb-2">820172</p><CopyButton text="820172" label="Код" /></div>
+                                <div><label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">ЄДРПОУ</label><p className="font-mono text-gray-800 mb-2">43997335</p><CopyButton text="43997335" label="Код" /></div>
                             </div>
                             <div className="border-t pt-4">
                                 <label className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1 block">Призначення платежу</label>
                                 <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-100 flex gap-3 items-start">
                                     <Icon name="AlertCircle" size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
-                                    <p className="text-sm text-yellow-800 italic">
-                                        Оплата за навчання студента <span className="font-bold">[ПІБ СТУДЕНТА]</span>, факультет, форма навчання, курс.
-                                    </p>
+                                    <p className="text-sm text-yellow-800 italic">Оплата за навчання студента <span className="font-bold">[ПІБ СТУДЕНТА]</span>, факультет, форма навчання, курс.</p>
                                 </div>
                             </div>
                         </div>
@@ -753,7 +590,6 @@
         };
 
         const ChecklistTab = ({ onSubjectClick }) => {
-            // Helper to check if all tasks are done
             const isSubjectDone = (key, taskCount) => {
                 const saved = JSON.parse(localStorage.getItem(`tasks_${key}`)) || {};
                 const doneCount = Object.values(saved).filter(Boolean).length;
@@ -763,22 +599,12 @@
             return (
                 <div className="px-4 pb-20">
                     <div className="space-y-4">
-                        {Object.entries(SUBJECT_DETAILS).sort((a, b) => a[1].priority - b[1].priority).map(([key, details]) => {
+                        {Object.entries(SUBJECT_DETAILS).map(([key, details]) => {
                             const isDone = isSubjectDone(key, details.tasks.length);
-                            
                             return (
-                                <div 
-                                    key={key} 
-                                    onClick={() => onSubjectClick(key)}
-                                    className={`bg-white p-4 rounded-xl shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-50 active:scale-95 transition-all border-l-4 ${
-                                        isDone ? 'opacity-60 grayscale' : ''
-                                    }`}
-                                    style={{ borderColor: isDone ? '#9ca3af' : (details.priority === 1 ? '#ef4444' : details.priority === 2 ? '#eab308' : '#22c55e') }}
-                                >
+                                <div key={key} onClick={() => onSubjectClick(key)} className={`bg-white p-4 rounded-xl shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-50 active:scale-95 transition-all border-l-4 ${isDone ? 'opacity-60 grayscale' : ''}`} style={{ borderColor: isDone ? '#9ca3af' : '#22c55e' }}>
                                     <div>
-                                        <h3 className={`font-bold text-gray-900 text-lg ${isDone ? 'line-through text-gray-500' : ''}`}>
-                                            {details.shortName}
-                                        </h3>
+                                        <h3 className={`font-bold text-gray-900 text-lg ${isDone ? 'line-through text-gray-500' : ''}`}>{details.shortName}</h3>
                                         <p className="text-xs text-gray-500 line-clamp-1">{details.fullName}</p>
                                     </div>
                                     <Icon name="ChevronRight" size={20} className="text-gray-400" />
@@ -819,16 +645,8 @@
                                     <div>
                                         <p className="text-gray-800 font-medium">{student.name}</p>
                                         <div className="flex gap-2 mt-1">
-                                            {student.role && (
-                                                <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${student.role === 'Староста' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700'}`}>
-                                                    {student.role}
-                                                </span>
-                                            )}
-                                            {student.bday && (
-                                                <span className="text-xs px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 font-mono flex items-center gap-1">
-                                                    🎂 {student.bday} {getZodiacSign(student.bday)}
-                                                </span>
-                                            )}
+                                            {student.role && (<span className={`text-xs px-2 py-0.5 rounded-full font-bold ${student.role === 'Староста' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700'}`}>{student.role}</span>)}
+                                            {student.bday && (<span className="text-xs px-2 py-0.5 rounded-full bg-pink-50 text-pink-600 font-mono flex items-center gap-1">🎂 {student.bday} {getZodiacSign(student.bday)}</span>)}
                                         </div>
                                     </div>
                                 </div>
@@ -857,58 +675,27 @@
                 return Math.floor(diffDays / 7) + 1;
             }, [now]);
 
-            const dayIndex = now.getDay(); 
+            const dayIndex = now.getDay();
+            const isSessionTime = currentWeek > 16 || (now.getMonth() === 11 && now.getDate() >= 25) || now.getMonth() === 0;
 
             return (
                 <div className="max-w-md mx-auto min-h-screen bg-[#f3f4f6] relative">
                     <Header currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} />
-                    <UpcomingClassAlert currentWeek={currentWeek} now={now} />
                     
-                    {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} onSubjectClick={setSelectedSubject} />}
+                    {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} onSubjectClick={setSelectedSubject} sessionMode={isSessionTime} />}
                     {activeTab === 'teachers' && <TeachersTab />}
                     {activeTab === 'payment' && <PaymentTab />}
                     {activeTab === 'group' && <GroupTab />}
                     {activeTab === 'checklist' && <ChecklistTab onSubjectClick={setSelectedSubject} />}
 
-                    {/* Subject Modal */}
                     {selectedSubject && <SubjectModal subjectKey={selectedSubject} onClose={() => setSelectedSubject(null)} />}
 
                     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-3 flex justify-between items-center z-40 max-w-md mx-auto">
-                        <button 
-                            onClick={() => setActiveTab('schedule')}
-                            className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'schedule' ? 'text-blue-600' : 'text-gray-400'}`}
-                        >
-                            <Icon name="Calendar" size={22} />
-                            <span className="text-[10px] font-medium">Розклад</span>
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('checklist')}
-                            className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'checklist' ? 'text-blue-600' : 'text-gray-400'}`}
-                        >
-                            <Icon name="List" size={22} />
-                            <span className="text-[10px] font-medium">Сесія</span>
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('teachers')}
-                            className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'teachers' ? 'text-blue-600' : 'text-gray-400'}`}
-                        >
-                            <Icon name="Video" size={22} />
-                            <span className="text-[10px] font-medium">Зум</span>
-                        </button>
-                         <button 
-                            onClick={() => setActiveTab('group')}
-                            className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'group' ? 'text-blue-600' : 'text-gray-400'}`}
-                        >
-                            <Icon name="Users" size={22} />
-                            <span className="text-[10px] font-medium">Група</span>
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('payment')}
-                            className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'payment' ? 'text-blue-600' : 'text-gray-400'}`}
-                        >
-                            <Icon name="CreditCard" size={22} />
-                            <span className="text-[10px] font-medium">Оплата</span>
-                        </button>
+                        <button onClick={() => setActiveTab('schedule')} className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'schedule' ? 'text-blue-600' : 'text-gray-400'}`}><Icon name="Calendar" size={22} /><span className="text-[10px] font-medium">Розклад</span></button>
+                        <button onClick={() => setActiveTab('checklist')} className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'checklist' ? 'text-blue-600' : 'text-gray-400'}`}><Icon name="List" size={22} /><span className="text-[10px] font-medium">Сесія</span></button>
+                        <button onClick={() => setActiveTab('teachers')} className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'teachers' ? 'text-blue-600' : 'text-gray-400'}`}><Icon name="Video" size={22} /><span className="text-[10px] font-medium">Зум</span></button>
+                        <button onClick={() => setActiveTab('group')} className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'group' ? 'text-blue-600' : 'text-gray-400'}`}><Icon name="Users" size={22} /><span className="text-[10px] font-medium">Група</span></button>
+                        <button onClick={() => setActiveTab('payment')} className={`flex flex-col items-center gap-1 transition-colors px-2 ${activeTab === 'payment' ? 'text-blue-600' : 'text-gray-400'}`}><Icon name="CreditCard" size={22} /><span className="text-[10px] font-medium">Оплата</span></button>
                     </div>
                 </div>
             );
