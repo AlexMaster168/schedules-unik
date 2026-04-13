@@ -64,7 +64,7 @@
                 fullName: "Ділова іноземна мова",
                 shortName: "Англійська мова",
                 teacher: "Карпова Олена Олегівна",
-                tasks: []
+                tasks: ["Створити CV"]
             },
             "ППВШ": {
                 fullName: "Педагогіка та психологія вищої школи",
@@ -88,8 +88,8 @@
             "Стайкуца Сергій Володимирович": "https://us05web.zoom.us/j/7655051866?pwd=YlorZnVXeDFtbHMrYjRYZFBTUlN4Zz09",
             "Чукурна Олена Павлівна": "https://us04web.zoom.us/j/74550802869?pwd=9SdnCPYe9f6zVIbs1bVMN76oLyQ1Ah.1",
             "Карпова Олена Олегівна": "https://us04web.zoom.us/j/77199808450?pwd=TGN1Y25sOUxONm91dVdiOW85OTAxUT09",
-            "Кухарська Наталія Олександрівна": "",
-            "Шиліна Наталія Євгенівна": ""
+            "Кухарська Наталія Олександрівна": "https://us05web.zoom.us/j/7894830112?pwd=akFtUzN4bUg3aHRPZjhDK2NSeEhFUT09",
+            "Шиліна Наталія Євгенівна": "https://us04web.zoom.us/j/2470836787?pwd=U1o2RnNEUkNzcVpTMEx0bTZZN0dZdz09"
         };
 
         const GROUP_LIST = [
@@ -568,6 +568,8 @@
             const [activeTab, setActiveTab] = useState('schedule');
             const [selectedSubject, setSelectedSubject] = useState(null);
             const [now, setNow] = useState(new Date());
+            const [upcomingLesson, setUpcomingLesson] = useState(null);
+            const [timeLeft, setTimeLeft] = useState("");
             const notifiedClasses = useRef(new Set());
 
             useEffect(() => {
@@ -597,17 +599,31 @@
                     const currentDay = currentDate.getDay();
                     const currentMinutes = currentDate.getHours() * 60 + currentDate.getMinutes();
                     const todayLessons = SCHEDULE[currentDay] || [];
+                    
+                    let upcoming = null;
+                    let timerStr = "";
 
                     todayLessons.forEach(lesson => {
                         if (!checkWeek(lesson.weeks, currentWeek)) return;
 
                         const [startStr] = lesson.time.split('-');
                         const [startH, startM] = startStr.split(':').map(Number);
-                        const startMinTotal = startH * 60 + startM;
+                        
+                        const startTime = new Date(currentDate);
+                        startTime.setHours(startH, startM, 0, 0);
+                        
+                        const diffMs = startTime - currentDate;
+                        
+                        if (diffMs > 0 && diffMs <= 300000) {
+                            upcoming = lesson;
+                            const m = Math.floor(diffMs / 60000);
+                            const s = Math.floor((diffMs % 60000) / 1000);
+                            timerStr = `${m}:${s < 10 ? '0' : ''}${s}`;
+                        }
 
+                        const startMinTotal = startH * 60 + startM;
                         if (currentMinutes >= startMinTotal && currentMinutes <= startMinTotal + 5) {
                             const lessonId = `${currentDate.toDateString()}-${lesson.time}-${lesson.subject}`;
-                            
                             if (!notifiedClasses.current.has(lessonId)) {
                                 notifiedClasses.current.add(lessonId);
                                 if ("Notification" in window && Notification.permission === "granted") {
@@ -620,6 +636,9 @@
                         }
                     });
 
+                    setUpcomingLesson(upcoming);
+                    setTimeLeft(timerStr);
+
                 }, 1000);
                 return () => clearInterval(timer);
             }, [currentWeek]);
@@ -628,7 +647,21 @@
             const isSessionTime = currentWeek > 40;
 
             return (
-                <div className="max-w-md mx-auto min-h-screen bg-[#f3f4f6] relative">
+                <div className="max-w-md mx-auto min-h-screen bg-[#f3f4f6] relative flex flex-col">
+                    {upcomingLesson && (
+                        <div className="bg-orange-500 text-white px-4 py-3 flex justify-between items-center shadow-md animate-fade-in sticky top-0 z-50">
+                            <div className="flex items-center gap-3">
+                                <Icon name="Bell" size={24} className="animate-pulse" />
+                                <div className="flex flex-col">
+                                    <span className="text-xs font-bold uppercase opacity-90">До початку пари:</span>
+                                    <span className="text-sm font-semibold line-clamp-1">{upcomingLesson.subject}</span>
+                                </div>
+                            </div>
+                            <div className="bg-orange-700 px-3 py-1 rounded-lg font-mono font-bold text-xl">
+                                {timeLeft}
+                            </div>
+                        </div>
+                    )}
                     <Header currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} />
                     
                     {activeTab === 'schedule' && <ScheduleTab currentWeek={currentWeek} currentDayIndex={dayIndex} now={now} onSubjectClick={setSelectedSubject} sessionMode={isSessionTime} />}
